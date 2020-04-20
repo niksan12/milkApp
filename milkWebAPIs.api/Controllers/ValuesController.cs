@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using milkWebAPIs.api.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace milkWebAPIs.api.Controllers {
+    [Authorize]
     [Route ("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase {
@@ -24,6 +26,7 @@ namespace milkWebAPIs.api.Controllers {
         }
 
         // GET api/values/5
+        [AllowAnonymous]
         [HttpGet ("{id}")]
         public async Task<IActionResult> GetValue(int id) {
             var val = await _context.Values.FirstOrDefaultAsync(x => x.Id ==id);
