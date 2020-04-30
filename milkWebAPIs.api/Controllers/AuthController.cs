@@ -23,6 +23,8 @@ namespace milkWebAPIs.api.Controllers {
         [HttpPost ("register")]
         public async Task<IActionResult> Register (UserForRegisterDto userForRegisterDto) {
 
+           
+          
             userForRegisterDto.Username = userForRegisterDto.Username.ToLower ();
 
             if (await _repo.UserExists (userForRegisterDto.Username))
@@ -39,6 +41,8 @@ namespace milkWebAPIs.api.Controllers {
 
         [HttpPost ("login")]
         public async Task<IActionResult> Login (UserForLoginDto userForLoginDto) {
+
+             throw new System.Exception("Sorry error occurred");
 
             var userFromRepo = await _repo.Login (userForLoginDto.Username.ToLower(), userForLoginDto.Password);
 
