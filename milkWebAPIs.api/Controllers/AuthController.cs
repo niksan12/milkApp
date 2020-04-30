@@ -42,7 +42,7 @@ namespace milkWebAPIs.api.Controllers {
         [HttpPost ("login")]
         public async Task<IActionResult> Login (UserForLoginDto userForLoginDto) {
 
-             throw new System.Exception("Sorry error occurred");
+            // throw new System.Exception("Sorry error occurred");
 
             var userFromRepo = await _repo.Login (userForLoginDto.Username.ToLower(), userForLoginDto.Password);
 
