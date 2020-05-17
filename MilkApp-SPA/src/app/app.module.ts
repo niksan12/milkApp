@@ -24,6 +24,10 @@ import { TeamCardComponent } from './team/team-card/team-card.component';
 import { TeamDetailComponent } from './team/team-detail/team-detail.component';
 import { TeamDetailResolver } from './_resolvers/team-detail.resolver';
 import { TeamListResolver } from './_resolvers/team-list.resolver';
+import { TEditComponent } from './team/t-edit/t-edit.component';
+import { TEditResolver } from './_resolvers/t-edit.resolver';
+import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
+
 
 
 export function tokenGetter(){
@@ -41,7 +45,9 @@ export function tokenGetter(){
       TeamListComponent,
       MessagesComponent,
       TeamCardComponent,
-      TeamDetailComponent
+      TeamDetailComponent,
+      TEditComponent,
+
    ],
    imports: [
       BrowserModule,
@@ -64,7 +70,9 @@ export function tokenGetter(){
       ErrorInterceptorProvider,
       UserService,
       TeamDetailResolver,
-      TeamListResolver
+      TeamListResolver,
+      TEditResolver,
+      PreventUnsavedChanges
    ],
    bootstrap: [
       AppComponent
