@@ -13,6 +13,8 @@ namespace milkWebAPIs.api.Models
         public DateTime DateAdded { get; set; }
 
         public bool IsMain { get; set; }
+        
+        public string PublicID { get; set; }
 
         public User User { get; set; }
 

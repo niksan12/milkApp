@@ -1,12 +1,13 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AutoMapper;
 using milkWebAPIs.api.Data;
 using milkWebAPIs.api.Dtos;
 using milkWebAPIs.api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace milkWebAPIs.api.Controllers {
     [Route ("api/[controller]")]
@@ -14,17 +15,17 @@ namespace milkWebAPIs.api.Controllers {
     public class AuthController : ControllerBase {
         private readonly IAuthRepository _repo;
         public IConfiguration _Config { get; set; }
-        public AuthController (IAuthRepository repo, IConfiguration config) {
+        private readonly IMapper _mapper;
+        public AuthController (IAuthRepository repo, IConfiguration config, IMapper mapper) {
             _Config = config;
             _repo = repo;
+            _mapper = mapper;
 
         }
 
         [HttpPost ("register")]
         public async Task<IActionResult> Register (UserForRegisterDto userForRegisterDto) {
 
-           
-          
             userForRegisterDto.Username = userForRegisterDto.Username.ToLower ();
 
             if (await _repo.UserExists (userForRegisterDto.Username))
@@ -44,7 +45,7 @@ namespace milkWebAPIs.api.Controllers {
 
             // throw new System.Exception("Sorry error occurred");
 
-            var userFromRepo = await _repo.Login (userForLoginDto.Username.ToLower(), userForLoginDto.Password);
+            var userFromRepo = await _repo.Login (userForLoginDto.Username.ToLower (), userForLoginDto.Password);
 
             if (userFromRepo == null)
                 return Unauthorized ();
@@ -56,27 +57,26 @@ namespace milkWebAPIs.api.Controllers {
             };
 
             var key = new SymmetricSecurityKey (System.Text.Encoding.UTF8
-            .GetBytes(_Config.GetSection("AppSettings:Token").Value));
+                .GetBytes (_Config.GetSection ("AppSettings:Token").Value));
 
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+            var creds = new SigningCredentials (key, SecurityAlgorithms.HmacSha512Signature);
 
-            var tokenDescriptor = new SecurityTokenDescriptor{
-                Subject = new ClaimsIdentity(claims),
-                Expires = System.DateTime.Now.AddDays(1),
+            var tokenDescriptor = new SecurityTokenDescriptor {
+                Subject = new ClaimsIdentity (claims),
+                Expires = System.DateTime.Now.AddDays (1),
                 SigningCredentials = creds
             };
 
-            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenHandler = new JwtSecurityTokenHandler ();
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var token = tokenHandler.CreateToken (tokenDescriptor);
 
-            return Ok(new {
-                token = tokenHandler.WriteToken(token)
+            var user = _mapper.Map<UserForListDto>(userFromRepo);
+
+            return Ok (new {
+                token = tokenHandler.WriteToken (token), user
 
             });
-
-
-            
 
         }
     }

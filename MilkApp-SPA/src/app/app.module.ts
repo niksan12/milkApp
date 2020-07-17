@@ -7,6 +7,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { RouterModule } from '@angular/router';
 import { JwtModule } from '@auth0/angular-jwt';
 import { NgxGalleryModule } from 'ngx-gallery-9';
+import { FileUploadModule } from 'ng2-file-upload';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -27,6 +28,8 @@ import { TeamListResolver } from './_resolvers/team-list.resolver';
 import { TEditComponent } from './team/t-edit/t-edit.component';
 import { TEditResolver } from './_resolvers/t-edit.resolver';
 import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
+import { PhotoEditorComponent } from './team/photo-editor/photo-editor.component';
+
 
 
 
@@ -47,6 +50,7 @@ export function tokenGetter(){
       TeamCardComponent,
       TeamDetailComponent,
       TEditComponent,
+      PhotoEditorComponent
 
    ],
    imports: [
@@ -57,6 +61,7 @@ export function tokenGetter(){
       TabsModule.forRoot(),
       RouterModule.forRoot (appRoutes),
       NgxGalleryModule,
+      FileUploadModule,
       JwtModule.forRoot({
         config: {
           tokenGetter,

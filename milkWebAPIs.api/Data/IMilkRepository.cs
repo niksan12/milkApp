@@ -11,6 +11,11 @@ namespace milkWebAPIs.api.Data
         Task<bool> SaveAll(); //More than one save returns true if not returns false
         Task<IEnumerable<User>> GetUsers(); //All Users
         Task<User> GetUser(int id); //Individual users
+
+        Task<Photo> GetPhoto(int id);
+
+        Task<Photo> GetMainPhotoForUser(int userId);
+        
         
 
         
